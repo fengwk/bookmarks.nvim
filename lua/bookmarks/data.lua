@@ -7,7 +7,7 @@ local M = {
     bookmarks_order_ids = {},
     bookmarks_order = "time",
 
-    cwd = nil,
+    ns = nil,
     data_filename = nil,
     loaded_data = false,
     data_dir = nil,

@@ -1,3 +1,4 @@
+local config = require("bookmarks.config")
 local md5 = require("bookmarks.md5")
 local w = require("bookmarks.window")
 local data = require("bookmarks.data")
@@ -286,8 +287,11 @@ end
 -- restore bookmarks from disk file
 function M.load_data()
     -- vim.notify("load bookmarks data", "info")
-    local cwd = string.gsub(api.nvim_eval("getcwd()"), data.path_sep, "_")
-    if data.cwd ~= nil and cwd ~= data.cwd then -- maybe change session
+    local namespace = config.get_data().namespace or function()
+      return api.nvim_eval("getcwd()")
+    end
+    local ns = string.gsub(namespace(), data.path_sep, "_")
+    if data.ns ~= nil and ns ~= data.ns then -- maybe change session
         M.persistent()
         data.bookmarks = {}
         data.loaded_data = false
@@ -302,12 +306,12 @@ function M.load_data()
         assert(os.execute("mkdir " .. data_dir))
     end
 
-    local data_filename = string.format("%s%s%s", data_dir, data.path_sep, cwd)
+    local data_filename = string.format("%s%s%s", data_dir, data.path_sep, ns)
     if vim.loop.fs_stat(data_filename) then
         dofile(data_filename)
     end
 
-    data.cwd = cwd
+    data.ns = ns
     data.loaded_data = true -- mark
     data.data_dir = data_dir
     data.data_filename = data_filename

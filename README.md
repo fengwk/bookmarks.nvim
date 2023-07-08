@@ -126,7 +126,11 @@ require("bookmarks").setup({
     hl = {
         border = "TelescopeBorder", -- border highlight
         cursorline = "guibg=Gray guifg=White", -- cursorline highlight
-    }
+    },
+
+    -- namespace = function() -- You can customize how you want to isolate the bookmarks, the default will be to use 'cwd'
+    --     return "global"
+    -- end
 })
 ```
 

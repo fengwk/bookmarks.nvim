@@ -32,19 +32,7 @@ function M.setup(user_config)
         return
     end
 
-    for dk, dv in pairs(M.data) do
-        if type(dv) ~= "table" then
-            if user_config[dk] ~= nil then
-                M.data[dk] = user_config[dk]
-            end
-        else
-            for fk, _ in pairs(dv) do
-                if user_config[dk] ~= nil and user_config[dk][fk] ~= nil then
-                    M.data[dk][fk] = user_config[dk][fk]
-                end
-            end
-        end
-    end
+    M.data = vim.tbl_deep_extend("force", M.data, user_config)
 end
 
 function M.get_data()
